@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 main(){
-
   runApp(MyApp());
 }
 
@@ -17,8 +16,186 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class TopicName extends StatelessWidget {
+  TopicName({Key? key}) : super(key: key);
+
+  TextEditingController controller1 = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Topic Name'),
+        backgroundColor: Colors.blueGrey,
+        centerTitle: true,
+      ),
+      body:
+      Container(
+        margin: EdgeInsets.symmetric(vertical: 20,horizontal: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextFormField(
+              controller: controller1,
+              validator: (String? value){
+                if (value!.isEmpty) {
+                  return 'Enter topic name';
+                }
+                return null;
+              },
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              decoration: InputDecoration(
+                hintText: 'Topic',
+                border: OutlineInputBorder(),
+              ),
+
+            ),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueGrey,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)
+                    ),
+                ),
+                onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>TeacherInformationPage(topic:controller1.text)));
+            }, child: Icon(Icons.arrow_circle_right))
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
 class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.black,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30)
+            )
+          ),
+          onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>TopicName()));
+    }, child: Text('Cover Page',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 24),),
+      ),
+    ),
+    );
+  }
+}
+
+
+class TeacherInformationPage extends StatelessWidget {
+  String? topic;
+  TeacherInformationPage({required this.topic,Key? key}) : super(key: key);
+
+  TextEditingController controller1 = TextEditingController();
+  TextEditingController controller2 = TextEditingController();
+  TextEditingController controller3 = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Teacher Information'),
+        backgroundColor: Colors.black,
+      ),
+
+      body:
+      Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 16,vertical: 5),
+            child: TextFormField(
+              controller: controller1,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (String? value){
+                if(value!.isEmpty){
+                  return 'Teacher Name';
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                hintText: 'Teacher Name',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 16,vertical: 5),
+            child: TextFormField(
+              controller: controller2,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (String? value){
+                if(value!.isEmpty){
+                  return 'Position';
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                hintText: 'Position',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 16,vertical: 5),
+            child: TextFormField(
+              controller: controller3,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (String? value){
+                if(value!.isEmpty){
+                  return 'Department';
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                hintText: 'Department',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)
+                )
+            ),
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>StudentInformationPage(
+                topic:topic,teacherName:controller1.text,position:controller2.text,deptTeacher:controller3.text)));
+            }, child: Icon(Icons.arrow_forward_rounded),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class StudentInformationPage extends StatelessWidget {
+  String? topic;
+  String? teacherName;
+  String? position;
+  String? deptTeacher;
+  StudentInformationPage({
+    required this.topic,
+    required this.teacherName,
+    required this.position,
+    this.deptTeacher,
+    Key? key}) : super(key: key);
 
 
   TextEditingController controller1 = TextEditingController();
@@ -28,9 +205,6 @@ class HomePage extends StatelessWidget {
   TextEditingController controller5 = TextEditingController();
   TextEditingController controller6 = TextEditingController();
   TextEditingController controller7 = TextEditingController();
-  TextEditingController controller8 = TextEditingController();
-  TextEditingController controller9 = TextEditingController();
-  TextEditingController controller10 = TextEditingController();
 
   ConfirmationAlertBox(context){
     showDialog(context: context, builder: (context){
@@ -38,13 +212,19 @@ class HomePage extends StatelessWidget {
         title: Text('Confirmation'),
         content: Text('Are you sure for submit'),
         actions: [
-          TextButton(onPressed: (){}, child: Text('No')),
+          TextButton(onPressed: (){
+            Navigator.pop(context);
+          }, child: Text('No')),
           TextButton(
                   onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => PrintPage(
+                              topic: topic,
+                                teacherName:teacherName,
+                                position:position,
+                                deptTeacher:deptTeacher,
                                 name: controller1.text,
                                 id: controller2.text,
                                 courseCode: controller3.text,
@@ -237,13 +417,13 @@ class HomePage extends StatelessWidget {
               ),
             ),
             ElevatedButton(onPressed: (){
-              print(controller1.text);
-              print(controller2.text);
-              print(controller3.text);
-              print(controller4.text);
-              print(controller5.text);
-              print(controller6.text);
-              print(controller7.text);
+              // print(controller1.text);
+              // print(controller2.text);
+              // print(controller3.text);
+              // print(controller4.text);
+              // print(controller5.text);
+              // print(controller6.text);
+              // print(controller7.text);
 
               ConfirmationAlertBox(context);
             },
@@ -301,6 +481,10 @@ class HomePage extends StatelessWidget {
 }
 
 class PrintPage extends StatelessWidget {
+  String? topic;
+  String? teacherName;
+  String? position;
+  String? deptTeacher;
   String? name;
   String? id;
   String? courseCode;
@@ -309,6 +493,10 @@ class PrintPage extends StatelessWidget {
   String? department;
   String? versity;
   PrintPage({
+    required this.topic,
+    required this.teacherName,
+    required this.position,
+    this.deptTeacher,
     required this.name,
     required this.id,
     required this.courseCode,
@@ -338,65 +526,93 @@ class PrintPage extends StatelessWidget {
               width: double.infinity,
               child: SingleChildScrollView(
                 child:
-                Container(
-                  child: Column(
-                    //mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black),
-                          borderRadius: BorderRadius.circular(80),
-                          color: Colors.grey.shade400
+                SingleChildScrollView(
+                  child: Container(
+                    child: Column(
+                      //mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                            height: 135,
+                            width: double.infinity,
+                            child: Image.network('http://en.wikipedia.org/wiki/Special:FilePath/Leading_University_Logo.png')),
+                        Container(
+                            //height: 0,
+                          margin: EdgeInsets.symmetric(vertical: 19),
+                            child:
+                            Column(
+                              children: [
+                                Center(child:
+                                SizedBox(height:50,child: Text('Assignment on $topic',style: TextStyle(fontSize: 19,fontWeight: FontWeight.bold),))),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height:30,child: Text('Course Code  :  $courseCode',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold))),
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('Course Title :  $courseTitle',style: TextStyle(fontSize: 13)),
+                                  ],
+                                ),
+                              ],
+                            )),
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black),
+                            borderRadius: BorderRadius.circular(80),
+                            color: Colors.grey.shade400
+                          ),
+                            margin: EdgeInsets.symmetric(vertical: 24),
+                            child: Text('   Submitted to   ',style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),)
                         ),
-                          margin: EdgeInsets.symmetric(vertical: 30),
-                          child: Text('   Submitted to   ',style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),)
-                      ),
-                      SizedBox(
-                          height:29,
-                          width: double.infinity,
-                          child: Text('',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),)
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black),
-                          borderRadius: BorderRadius.circular(80),
-                          color: Colors.grey.shade400
+                        SizedBox(
+                            height:29,
+                            width: double.infinity,
+                            child: Text('$teacherName',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),)
                         ),
-                          margin: EdgeInsets.symmetric(vertical: 30),
-                          child: Text('   Submitted by   ',style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),)
-                      ),
-                      SizedBox(
-                          height:29,
-                          width: double.infinity,
-                          child: Text('Name              :  $name',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),)
-                      ),
-                      SizedBox(
-                          height:29,
-                          width: double.infinity,
-                          child: Text('ID                     :  $id',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),)
-                      ),
-                      SizedBox(
-                          height:29,
-                          width: double.infinity,
-                          child: Text('Course Code  :  $courseCode',style: TextStyle(fontSize: 15))
-                      ),
-                      SizedBox(
-                          height:29,
-                          width: double.infinity,
-                          child: Text('Course Title       :  $courseTitle',style: TextStyle(fontSize: 13))
-                      ),
-                      SizedBox(
-                          height:29,
-                          width: double.infinity,
-                          child: Text('Section           :  $batch',style: TextStyle(fontSize: 15))
-                      ),
-                      SizedBox(
-                          height:29,
-                          width: double.infinity,
-                          child: Text('Department   :  $department',style: TextStyle(fontSize: 15))
-                      ),
+                        SizedBox(
+                            height:29,
+                            width: double.infinity,
+                            child: Text('$position',style: TextStyle(fontSize: 14),)
+                        ),
+                        SizedBox(
+                            height:29,
+                            width: double.infinity,
+                            child: Text('$deptTeacher',style: TextStyle(fontSize: 14),)
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black),
+                            borderRadius: BorderRadius.circular(80),
+                            color: Colors.grey.shade400
+                          ),
+                            margin: EdgeInsets.symmetric(vertical: 24),
+                            child: Text('   Submitted by   ',style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),)
+                        ),
+                        SizedBox(
+                            height:29,
+                            width: double.infinity,
+                            child: Text('Name              :  $name',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),)
+                        ),
+                        SizedBox(
+                            height:29,
+                            width: double.infinity,
+                            child: Text('ID                     :  $id',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),)
+                        ),
+                        SizedBox(
+                            height:29,
+                            width: double.infinity,
+                            child: Text('Section           :  $batch',style: TextStyle(fontSize: 15))
+                        ),
+                        SizedBox(
+                            height:29,
+                            width: double.infinity,
+                            child: Text('Department   :  $department',style: TextStyle(fontSize: 15))
+                        ),
 
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
