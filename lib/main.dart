@@ -244,7 +244,7 @@ class StudentInformationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cover Page'),
+        title: Text('Student Information'),
         toolbarHeight: 85,
         centerTitle: true,
         backgroundColor: Colors.black,
@@ -506,6 +506,10 @@ class PrintPage extends StatelessWidget {
     required this.versity,
     Key? key}) : super(key: key);
 
+  var imageItems=[
+    {'img':'http://en.wikipedia.org/wiki/Special:FilePath/Leading_University_Logo.png'}
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -537,7 +541,7 @@ class PrintPage extends StatelessWidget {
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.black)
                             ),
-                            child: Image.network('http://en.wikipedia.org/wiki/Special:FilePath/Leading_University_Logo.png')),
+                            child: Image.network(imageItems[0]['img']!)),
                         Container(
                             //height: 0,
                           margin: EdgeInsets.symmetric(vertical: 19),
