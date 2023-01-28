@@ -52,15 +52,15 @@ class TopicName extends StatelessWidget {
             ),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blueGrey,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30)
-                    ),
+                  backgroundColor: Colors.blueGrey,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)
+                  ),
                 ),
                 onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>TeacherInformationPage(topic:controller1.text)));
-            }, child: Icon(Icons.arrow_circle_right))
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>TeacherInformationPage(topic:controller1.text)));
+                }, child: Icon(Icons.arrow_circle_right))
           ],
         ),
       ),
@@ -78,17 +78,17 @@ class HomePage extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.black,
-            foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30)
-            )
+              backgroundColor: Colors.black,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30)
+              )
           ),
           onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>TopicName()));
-    }, child: Text('Cover Page',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 24),),
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>TopicName()));
+          }, child: Text('Cover Page',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 24),),
+        ),
       ),
-    ),
     );
   }
 }
@@ -175,7 +175,7 @@ class TeacherInformationPage extends StatelessWidget {
             ),
             onPressed: (){
               Navigator.push(context, MaterialPageRoute(builder: (context)=>StudentInformationPage(
-                topic:topic,teacherName:controller1.text,position:controller2.text,deptTeacher:controller3.text)));
+                  topic:topic,teacherName:controller1.text,position:controller2.text,deptTeacher:controller3.text)));
             }, child: Icon(Icons.arrow_forward_rounded),
           ),
         ],
@@ -216,25 +216,25 @@ class StudentInformationPage extends StatelessWidget {
             Navigator.pop(context);
           }, child: Text('No')),
           TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PrintPage(
-                              topic: topic,
-                                teacherName:teacherName,
-                                position:position,
-                                deptTeacher:deptTeacher,
-                                name: controller1.text,
-                                id: controller2.text,
-                                courseCode: controller3.text,
-                                courseTitle: controller4.text,
-                                batch: controller5.text,
-                                department: controller6.text,
-                                versity: controller7.text)));
-                  },
-                  child: Text('Yes')),
-            ],
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PrintPage(
+                            topic: topic,
+                            teacherName:teacherName,
+                            position:position,
+                            deptTeacher:deptTeacher,
+                            name: controller1.text,
+                            id: controller2.text,
+                            courseCode: controller3.text,
+                            courseTitle: controller4.text,
+                            batch: controller5.text,
+                            department: controller6.text,
+                            versity: controller7.text)));
+              },
+              child: Text('Yes')),
+        ],
       );
     }
     );
@@ -250,7 +250,7 @@ class StudentInformationPage extends StatelessWidget {
         backgroundColor: Colors.black,
       ),
 
-      body: 
+      body:
       SingleChildScrollView(
         child: Column(
           children: [
@@ -428,12 +428,12 @@ class StudentInformationPage extends StatelessWidget {
               ConfirmationAlertBox(context);
             },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  elevation: 8,
-                  textStyle: TextStyle(
-                    fontWeight: FontWeight.bold,
+                    backgroundColor: Colors.black,
+                    elevation: 8,
+                    textStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
 
-                  )
+                    )
                 ),
                 child: Text('Submit')),
           ],
@@ -442,17 +442,17 @@ class StudentInformationPage extends StatelessWidget {
 
       drawer: Drawer(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
+            borderRadius: BorderRadius.circular(20)
         ),
         child: ListView(
           children: [
             DrawerHeader(
-              padding: EdgeInsets.all(0),
+                padding: EdgeInsets.all(0),
                 child: UserAccountsDrawerHeader(
-                decoration:BoxDecoration(color:Colors.brown),
-                accountName: Text('Developed by Hasan'),
-                accountEmail: Text('Hasan Ahmad'),
-            )),
+                  decoration:BoxDecoration(color:Colors.brown),
+                  accountName: Text('Developed by Hasan'),
+                  accountEmail: Text('Hasan Ahmad'),
+                )),
             ListTile(
               leading: Icon(Icons.phone),
               title: Text('Phone'),
@@ -539,12 +539,12 @@ class PrintPage extends StatelessWidget {
                             height: 135,
                             width: 135,
                             decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black)
+                                border: Border.all(color: Colors.black)
                             ),
                             child: Image.network(imageItems[0]['img']!)),
                         Container(
-                            //height: 0,
-                          margin: EdgeInsets.symmetric(vertical: 19),
+                          //height: 0,
+                            margin: EdgeInsets.symmetric(vertical: 19),
                             child:
                             Column(
                               children: [
@@ -565,11 +565,11 @@ class PrintPage extends StatelessWidget {
                               ],
                             )),
                         Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(80),
-                            color: Colors.grey.shade400
-                          ),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black),
+                                borderRadius: BorderRadius.circular(80),
+                                color: Colors.grey.shade400
+                            ),
                             margin: EdgeInsets.symmetric(vertical: 24),
                             child: Text('   Submitted to   ',style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),)
                         ),
@@ -589,11 +589,11 @@ class PrintPage extends StatelessWidget {
                             child: Text('$deptTeacher',style: TextStyle(fontSize: 14),)
                         ),
                         Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(80),
-                            color: Colors.grey.shade400
-                          ),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black),
+                                borderRadius: BorderRadius.circular(80),
+                                color: Colors.grey.shade400
+                            ),
                             margin: EdgeInsets.symmetric(vertical: 24),
                             child: Text('   Submitted by   ',style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),)
                         ),
