@@ -533,7 +533,10 @@ class PrintPage extends StatelessWidget {
                       children: [
                         Container(
                             height: 135,
-                            width: double.infinity,
+                            width: 135,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black)
+                            ),
                             child: Image.network('http://en.wikipedia.org/wiki/Special:FilePath/Leading_University_Logo.png')),
                         Container(
                             //height: 0,
