@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 main(){
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -9,65 +9,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: HomePage(),
     );
   }
 }
-
-class TopicName extends StatelessWidget {
-  TopicName({Key? key}) : super(key: key);
-
-  TextEditingController controller1 = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Topic Name'),
-        backgroundColor: Colors.blueGrey,
-        centerTitle: true,
-      ),
-      body:
-      Container(
-        margin: EdgeInsets.symmetric(vertical: 20,horizontal: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextFormField(
-              controller: controller1,
-              validator: (String? value){
-                if (value!.isEmpty) {
-                  return 'Enter topic name';
-                }
-                return null;
-              },
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              decoration: InputDecoration(
-                hintText: 'Topic',
-                border: OutlineInputBorder(),
-              ),
-
-            ),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueGrey,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)
-                  ),
-                ),
-                onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>TeacherInformationPage(topic:controller1.text)));
-                }, child: Icon(Icons.arrow_circle_right))
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -86,13 +33,75 @@ class HomePage extends StatelessWidget {
           ),
           onPressed: (){
             Navigator.push(context, MaterialPageRoute(builder: (context)=>TopicName()));
-          }, child: Text('Cover Page',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 24),),
+          }, child: const Text('Cover Page',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 24),),
         ),
       ),
     );
   }
 }
 
+class TopicName extends StatelessWidget {
+  TopicName({Key? key}) : super(key: key);
+
+  TextEditingController controller1 = TextEditingController();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Topic Name'),
+        backgroundColor: Colors.blueGrey,
+        centerTitle: true,
+      ),
+      body:
+      Container(
+        margin: const EdgeInsets.symmetric(vertical: 20,horizontal: 20),
+        child: Form(
+          key: formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextFormField(
+                controller: controller1,
+                validator: (String? value){
+                  if (value?.trim().isEmpty?? true) {
+                    return 'Enter topic name';
+                  }
+                  return null;
+                },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                decoration: const InputDecoration(
+                  hintText: 'Topic',
+                  border: OutlineInputBorder(),
+                ),
+
+              ),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueGrey,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)
+                    ),
+                  ),
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TeacherInformationPage(
+                                  topic: controller1.text)));
+                    }
+                  },
+                  child: const Icon(Icons.arrow_circle_right))
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class TeacherInformationPage extends StatelessWidget {
   String? topic;
@@ -101,89 +110,94 @@ class TeacherInformationPage extends StatelessWidget {
   TextEditingController controller1 = TextEditingController();
   TextEditingController controller2 = TextEditingController();
   TextEditingController controller3 = TextEditingController();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Teacher Information'),
+        title: const Text('Teacher Information'),
         backgroundColor: Colors.black,
       ),
 
       body:
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 16,vertical: 5),
-            child: TextFormField(
-              controller: controller1,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (String? value){
-                if(value!.isEmpty){
-                  return 'Teacher Name';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                hintText: 'Teacher Name',
-                border: OutlineInputBorder(),
+      Form(
+        key: formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16,vertical: 5),
+              child: TextFormField(
+                controller: controller1,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (String? value){
+                  if(value?.trim().isEmpty?? true){
+                    return 'Teacher Name';
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  hintText: 'Teacher Name',
+                  border: OutlineInputBorder(),
+                ),
               ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 16,vertical: 5),
-            child: TextFormField(
-              controller: controller2,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (String? value){
-                if(value!.isEmpty){
-                  return 'Position';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                hintText: 'Position',
-                border: OutlineInputBorder(),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16,vertical: 5),
+              child: TextFormField(
+                controller: controller2,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (String? value){
+                  if(value?.trim().isEmpty?? true){
+                    return 'Position';
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  hintText: 'Position',
+                  border: OutlineInputBorder(),
+                ),
               ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 16,vertical: 5),
-            child: TextFormField(
-              controller: controller3,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (String? value){
-                if(value!.isEmpty){
-                  return 'Department';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                hintText: 'Department',
-                border: OutlineInputBorder(),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16,vertical: 5),
+              child: TextFormField(
+                controller: controller3,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (String? value){
+                  if(value?.trim().isEmpty?? true){
+                    return 'Department';
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  hintText: 'Department',
+                  border: OutlineInputBorder(),
+                ),
               ),
             ),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30)
-                )
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)
+                  )
+              ),
+              onPressed: (){
+                if (formKey.currentState!.validate()) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>StudentInformationPage(
+                      topic:topic,teacherName:controller1.text,position:controller2.text,deptTeacher:controller3.text)));
+                }
+              }, child: const Icon(Icons.arrow_forward_rounded),
             ),
-            onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>StudentInformationPage(
-                  topic:topic,teacherName:controller1.text,position:controller2.text,deptTeacher:controller3.text)));
-            }, child: Icon(Icons.arrow_forward_rounded),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
-
 
 class StudentInformationPage extends StatelessWidget {
   String? topic;
@@ -205,16 +219,17 @@ class StudentInformationPage extends StatelessWidget {
   TextEditingController controller5 = TextEditingController();
   TextEditingController controller6 = TextEditingController();
   TextEditingController controller7 = TextEditingController();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   ConfirmationAlertBox(context){
     showDialog(context: context, builder: (context){
       return AlertDialog(
-        title: Text('Confirmation'),
-        content: Text('Are you sure for submit'),
+        title: const Text('Confirmation'),
+        content: const Text('Are you sure for submit'),
         actions: [
           TextButton(onPressed: (){
             Navigator.pop(context);
-          }, child: Text('No')),
+          }, child: const Text('No')),
           TextButton(
               onPressed: () {
                 Navigator.push(
@@ -233,7 +248,7 @@ class StudentInformationPage extends StatelessWidget {
                             department: controller6.text,
                             versity: controller7.text)));
               },
-              child: Text('Yes')),
+              child: const Text('Yes')),
         ],
       );
     }
@@ -244,7 +259,7 @@ class StudentInformationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Student Information'),
+        title: const Text('Student Information'),
         toolbarHeight: 85,
         centerTitle: true,
         backgroundColor: Colors.black,
@@ -252,17 +267,18 @@ class StudentInformationPage extends StatelessWidget {
 
       body:
       SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              color: Colors.black12,
-              margin: EdgeInsets.symmetric(horizontal: 30,vertical: 10),
-              child: Container(
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: [
+              Container(
+                color: Colors.black12,
+                margin: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
                 child: TextFormField(
                   controller: controller1,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (String? value){
-                    if(value!.isEmpty){
+                    if(value?.trim().isEmpty?? true){
                       return 'Name';
                     }
                     return null;
@@ -270,22 +286,20 @@ class StudentInformationPage extends StatelessWidget {
                   onChanged: (value) {},
                   onTap: () {},
                   onSaved: (value) {},
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Name',
                     border: OutlineInputBorder(),
                   ),
                 ),
               ),
-            ),
-            Container(
-              color: Colors.black12,
-              margin: EdgeInsets.symmetric(horizontal: 30,vertical: 10),
-              child: Container(
+              Container(
+                color: Colors.black12,
+                margin: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
                 child: TextFormField(
                   controller: controller2,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (String? value){
-                    if(value!.isEmpty){
+                    if(value?.trim().isEmpty?? true){
                       return 'ID / Roll';
                     }
                     return null;
@@ -294,22 +308,20 @@ class StudentInformationPage extends StatelessWidget {
                   onChanged: (value) {},
                   onTap: () {},
                   onSaved: (value) {},
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'ID',
                     border: OutlineInputBorder(),
                   ),
                 ),
               ),
-            ),
-            Container(
-              color: Colors.black12,
-              margin: EdgeInsets.symmetric(horizontal: 30,vertical: 10),
-              child: Container(
+              Container(
+                color: Colors.black12,
+                margin: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
                 child: TextFormField(
                   controller: controller3,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (String? value){
-                    if(value!.isEmpty){
+                    if(value?.trim().isEmpty?? true){
                       return 'Course Code';
                     }
                     return null;
@@ -317,22 +329,20 @@ class StudentInformationPage extends StatelessWidget {
                   onChanged: (value) {},
                   onTap: () {},
                   onSaved: (value) {},
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Course Code',
                     border: OutlineInputBorder(),
                   ),
                 ),
               ),
-            ),
-            Container(
-              color: Colors.black12,
-              margin: EdgeInsets.symmetric(horizontal: 30,vertical: 10),
-              child: Container(
+              Container(
+                color: Colors.black12,
+                margin: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
                 child: TextFormField(
                   controller: controller4,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (String? value){
-                    if(value!.isEmpty){
+                    if(value?.trim().isEmpty?? true){
                       return 'Course Title';
                     }
                     return null;
@@ -340,22 +350,20 @@ class StudentInformationPage extends StatelessWidget {
                   onChanged: (value) {},
                   onTap: () {},
                   onSaved: (value) {},
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Course Title',
                     border: OutlineInputBorder(),
                   ),
                 ),
               ),
-            ),
-            Container(
-              color: Colors.black12,
-              margin: EdgeInsets.symmetric(horizontal: 30,vertical: 10),
-              child: Container(
+              Container(
+                color: Colors.black12,
+                margin: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
                 child: TextFormField(
                   controller: controller5,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (String? value){
-                    if(value!.isEmpty){
+                    if(value?.trim().isEmpty?? true){
                       return 'Batch / Section';
                     }
                     return null;
@@ -363,22 +371,20 @@ class StudentInformationPage extends StatelessWidget {
                   onChanged: (value) {},
                   onTap: () {},
                   onSaved: (value) {},
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Batch-(section)',
                     border: OutlineInputBorder(),
                   ),
                 ),
               ),
-            ),
-            Container(
-              color: Colors.black12,
-              margin: EdgeInsets.symmetric(horizontal: 30,vertical: 10),
-              child: Container(
+              Container(
+                color: Colors.black12,
+                margin: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
                 child: TextFormField(
                   controller: controller6,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (String? value){
-                    if(value!.isEmpty){
+                    if(value?.trim().isEmpty?? true){
                       return 'Department';
                     }
                     return null;
@@ -386,57 +392,57 @@ class StudentInformationPage extends StatelessWidget {
                   onChanged: (value) {},
                   onTap: () {},
                   onSaved: (value) {},
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Department',
                     border: OutlineInputBorder(),
                   ),
                 ),
               ),
-            ),
-            Container(
-              color: Colors.black12,
-              margin: EdgeInsets.symmetric(horizontal: 30,vertical: 10),
-              child: Container(
+              Container(
+                color: Colors.black12,
+                margin: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
                 child: TextFormField(
                   controller: controller7,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (String? value){
-                    if(value!.isEmpty){
-                      return 'Versity / College';
+                    if(value?.trim().isEmpty?? true){
+                      return 'Varsity / College';
                     }
                     return null;
                   },
                   onChanged: (value) {},
                   onTap: () {},
                   onSaved: (value) {},
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'University Name',
                     border: OutlineInputBorder(),
                   ),
                 ),
               ),
-            ),
-            ElevatedButton(onPressed: (){
-              // print(controller1.text);
-              // print(controller2.text);
-              // print(controller3.text);
-              // print(controller4.text);
-              // print(controller5.text);
-              // print(controller6.text);
-              // print(controller7.text);
+              ElevatedButton(onPressed: (){
+                // print(controller1.text);
+                // print(controller2.text);
+                // print(controller3.text);
+                // print(controller4.text);
+                // print(controller5.text);
+                // print(controller6.text);
+                // print(controller7.text);
 
-              ConfirmationAlertBox(context);
-            },
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    elevation: 8,
-                    textStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
+                if (formKey.currentState!.validate()) {
+                  ConfirmationAlertBox(context);
+                }
+              },
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      elevation: 8,
+                      textStyle: const TextStyle(
+                        fontWeight: FontWeight.bold,
 
-                    )
-                ),
-                child: Text('Submit')),
-          ],
+                      )
+                  ),
+                  child: const Text('Submit')),
+            ],
+          ),
         ),
       ),
 
@@ -446,7 +452,7 @@ class StudentInformationPage extends StatelessWidget {
         ),
         child: ListView(
           children: [
-            DrawerHeader(
+            const DrawerHeader(
                 padding: EdgeInsets.all(0),
                 child: UserAccountsDrawerHeader(
                   decoration:BoxDecoration(color:Colors.brown),
@@ -454,9 +460,9 @@ class StudentInformationPage extends StatelessWidget {
                   accountEmail: Text('Hasan Ahmad'),
                 )),
             ListTile(
-              leading: Icon(Icons.phone),
-              title: Text('Phone'),
-              subtitle: Text('(+880) 1716-874981'),
+              leading: const Icon(Icons.phone),
+              title: const Text('Phone'),
+              subtitle: const Text('(+880) 1716-874981'),
               hoverColor: Colors.grey,
               onTap: () {
 
@@ -464,9 +470,8 @@ class StudentInformationPage extends StatelessWidget {
 
             ),
             ListTile(
-              leading: Icon(Icons.question_mark_outlined),
-              title: Text('About'),
-              subtitle: Text(''),
+              leading: const Icon(Icons.question_mark_outlined),
+              title: const Text('About'),
               hoverColor: Colors.grey,
               onTap: () {
 
@@ -514,7 +519,7 @@ class PrintPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Print Cover Page'),
+        title: const Text('Print Cover Page'),
         backgroundColor: Colors.black,
       ),
       body:
@@ -525,101 +530,99 @@ class PrintPage extends StatelessWidget {
             //scrollDirection: Axis.vertical,
             child: Container(
               //color: Colors.grey,
-              margin: EdgeInsets.symmetric(horizontal: 20),
+              margin: const EdgeInsets.symmetric(horizontal: 20),
               //height: 300,
               width: double.infinity,
               child: SingleChildScrollView(
                 child:
                 SingleChildScrollView(
-                  child: Container(
-                    child: Column(
-                      //mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                            height: 135,
-                            width: 135,
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black)
-                            ),
-                            child: Image.network(imageItems[0]['img']!)),
-                        Container(
-                          //height: 0,
-                            margin: EdgeInsets.symmetric(vertical: 19),
-                            child:
-                            Column(
-                              children: [
-                                Center(child:
-                                SizedBox(height:50,child: Text('Assignment on $topic',style: TextStyle(fontSize: 19,fontWeight: FontWeight.bold),))),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(height:30,child: Text('Course Code  :  $courseCode',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold))),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text('Course Title :  $courseTitle',style: TextStyle(fontSize: 13)),
-                                  ],
-                                ),
-                              ],
-                            )),
-                        Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black),
-                                borderRadius: BorderRadius.circular(80),
-                                color: Colors.grey.shade400
-                            ),
-                            margin: EdgeInsets.symmetric(vertical: 24),
-                            child: Text('   Submitted to   ',style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),)
-                        ),
-                        SizedBox(
-                            height:29,
-                            width: double.infinity,
-                            child: Text('$teacherName',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),)
-                        ),
-                        SizedBox(
-                            height:29,
-                            width: double.infinity,
-                            child: Text('$position',style: TextStyle(fontSize: 14),)
-                        ),
-                        SizedBox(
-                            height:29,
-                            width: double.infinity,
-                            child: Text('$deptTeacher',style: TextStyle(fontSize: 14),)
-                        ),
-                        Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black),
-                                borderRadius: BorderRadius.circular(80),
-                                color: Colors.grey.shade400
-                            ),
-                            margin: EdgeInsets.symmetric(vertical: 24),
-                            child: Text('   Submitted by   ',style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),)
-                        ),
-                        SizedBox(
-                            height:29,
-                            width: double.infinity,
-                            child: Text('Name              :  $name',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),)
-                        ),
-                        SizedBox(
-                            height:29,
-                            width: double.infinity,
-                            child: Text('ID                     :  $id',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),)
-                        ),
-                        SizedBox(
-                            height:29,
-                            width: double.infinity,
-                            child: Text('Section           :  $batch',style: TextStyle(fontSize: 15))
-                        ),
-                        SizedBox(
-                            height:29,
-                            width: double.infinity,
-                            child: Text('Department   :  $department',style: TextStyle(fontSize: 15))
-                        ),
+                  child: Column(
+                    //mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          height: 135,
+                          width: 135,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black)
+                          ),
+                          child: Image.network(imageItems[0]['img']!)),
+                      Container(
+                        //height: 0,
+                          margin: const EdgeInsets.symmetric(vertical: 19),
+                          child:
+                          Column(
+                            children: [
+                              Center(child:
+                              SizedBox(height:50,child: Text('Assignment on $topic',style: const TextStyle(fontSize: 19,fontWeight: FontWeight.bold),))),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(height:30,child: Text('Course Code  :  $courseCode',style: const TextStyle(fontSize: 15,fontWeight: FontWeight.bold))),
+                                ],
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('Course Title :  $courseTitle',style: const TextStyle(fontSize: 13)),
+                                ],
+                              ),
+                            ],
+                          )),
+                      Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(80),
+                              color: Colors.grey.shade400
+                          ),
+                          margin: const EdgeInsets.symmetric(vertical: 24),
+                          child: const Text('   Submitted to   ',style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),)
+                      ),
+                      SizedBox(
+                          height:29,
+                          width: double.infinity,
+                          child: Text('$teacherName',style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16),)
+                      ),
+                      SizedBox(
+                          height:29,
+                          width: double.infinity,
+                          child: Text('$position',style: const TextStyle(fontSize: 14),)
+                      ),
+                      SizedBox(
+                          height:29,
+                          width: double.infinity,
+                          child: Text('$deptTeacher',style: const TextStyle(fontSize: 14),)
+                      ),
+                      Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(80),
+                              color: Colors.grey.shade400
+                          ),
+                          margin: const EdgeInsets.symmetric(vertical: 24),
+                          child: const Text('   Submitted by   ',style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),)
+                      ),
+                      SizedBox(
+                          height:29,
+                          width: double.infinity,
+                          child: Text('Name              :  $name',style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15),)
+                      ),
+                      SizedBox(
+                          height:29,
+                          width: double.infinity,
+                          child: Text('ID                     :  $id',style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15),)
+                      ),
+                      SizedBox(
+                          height:29,
+                          width: double.infinity,
+                          child: Text('Section           :  $batch',style: const TextStyle(fontSize: 15))
+                      ),
+                      SizedBox(
+                          height:29,
+                          width: double.infinity,
+                          child: Text('Department   :  $department',style: const TextStyle(fontSize: 15))
+                      ),
 
-                      ],
-                    ),
+                    ],
                   ),
                 ),
               ),
